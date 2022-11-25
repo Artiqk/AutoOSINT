@@ -1,8 +1,10 @@
 import os
 import shodan
 
+def get_shodan_api_key(key_path):
+    return open(key_path, 'r').readline().split("\n")[0]
 
-SHODAN_API_KEY = "GrKpd7opQhoCwrQKbDECaCjI6rWvIoU2"
+SHODAN_API_KEY = get_shodan_api_key("shodan_api.key")
 
 api = shodan.Shodan(SHODAN_API_KEY)
 
@@ -50,8 +52,8 @@ def shodan_search(domain):
 
 
 def handle_domain(domain):
-    # dnscan(domain)
-    # the_harvester(domain)
+    dnscan(domain)
+    the_harvester(domain)
     shodan_search(domain)
 
 
