@@ -10,4 +10,4 @@ parser.add_argument("-m", "--mail", help="target mail")
 args = parser.parse_args()
 
 handle_argument(args.domain, handle_domain)
-handle_argument(args.mail, handle_mail)
+# handle_argument(args.mail, handle_mail)
