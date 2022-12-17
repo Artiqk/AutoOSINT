@@ -1,5 +1,6 @@
 import os
 import shodan
+import yaml
 
 def get_shodan_api_key(key_path):
     try:
@@ -45,9 +46,18 @@ def dnscan(domain):
 def the_harvester(domain): # Add search engine search in config file
     dir_path, domain = get_paths(domain, "theHarvester")
     create_directories(dir_path)
-    search_engine = "bing"
-    cmd_harvester = "theHarvester -d " + domain + " -g -s -v -n -b " + search_engine + " -f " + dir_path + file_name
+    search_engines = get_search_engines_from_config("config/theHarvester.yml")
+    cmd_harvester = "theHarvester -d " + domain + " -g -s -v -n " + search_engines + " -f " + dir_path + file_name
     os.system(cmd_harvester)
+
+
+def get_search_engines_from_config(path_to_config):
+    with open(path_to_config, "r") as file:
+        config_data = yaml.safe_load(file)
+        engines =  config_data["search_engines"].strip()
+        if len(engines) == 0:
+            return engines
+        return ("-b " + engines)
 
 
 def shodan_search(domain): # Look for more in-depth search
