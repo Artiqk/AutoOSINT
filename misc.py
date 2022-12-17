@@ -29,12 +29,13 @@ def create_directories(dir_path):
     os.system(cmd_dir)
 
 
-def display_shodan_results(results):
-    print(f"Results found {results['total']}")
-    for result in results['matches']:
-        print(f"IP : {result['ip_str']}")
-        print(result['data'])
-        print("------------------------------")
+def save_shodan_results(path_to_file, results):
+    with open(path_to_file, "w") as file:
+        file.write(f"Results found {results['total']} :\n\n")
+        for result in results['matches']:
+            file.write(f"IP : {result['ip_str']}\n\n")
+            file.write(f"{result['data']}")
+            file.write("\n------------------------------\n\n")
 
 
 def dnscan(domain):
@@ -76,7 +77,10 @@ def get_harvester_params(path_to_config): # Add tuto for shodan api key (locate 
 
 def shodan_search(domain): # Look for more in-depth search
     results = api.search(domain)
-    display_shodan_results(results)
+    dir_path, domain = get_paths(domain, "shodan")
+    path_to_file = dir_path + file_name
+    create_directories(dir_path)
+    save_shodan_results(path_to_file, results)
 
 
 def handle_domain(domain):
