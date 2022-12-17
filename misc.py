@@ -1,6 +1,7 @@
 import os
 import shodan
 import yaml
+import json
 
 def get_shodan_api_key(key_path):
     try:
@@ -74,7 +75,7 @@ def get_harvester_params(path_to_config): # Add tuto for shodan api key (locate 
     return params
 
 
-def shodan_search(domain): # Look for more in-depth search
+def shodan_search(domain):
     results = api.search(domain)
     dir_path, domain = get_paths(domain, "shodan")
     path_to_file = dir_path + file_name
@@ -88,6 +89,18 @@ def urlscan(domain):
     path_to_file = dir_path + filename
     create_directories(dir_path)
     os.system(f"curl \"https://urlscan.io/api/v1/search/?q=domain:{domain}\" | tee {path_to_file}")
+
+    if yaml.load(open("config/urlscan.yml", "r"))["save_screenshots"]: # Ligne pas belle v2 => je regarde dans la config s'il faut enregirster les screenshots 
+        save_screenshots(path_to_file, dir_path)
+
+
+def save_screenshots(path_to_file, dir_path):
+    dir_path += "screenshots/"
+    os.system(f"mkdir -p {dir_path} && rm {dir_path}*")
+    with open(path_to_file, "r") as file:
+        data = json.load(file)
+        for element in data["results"]:
+            os.system(f"wget {element['screenshot']} -P {dir_path}")
 
 
 def get_general_config(path_to_file):
@@ -107,8 +120,10 @@ def handle_domain(domain):
         urlscan(domain)
 
 
-# def handle_mail(mail):
-#     handle_domain(mail)
+def handle_domains(domains):
+    with open(domains, "r") as file:
+        for line in file:
+            handle_domain(line.strip())
 
 
 def handle_argument(arg, callback):
