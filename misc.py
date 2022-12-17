@@ -5,6 +5,7 @@ import yaml
 def get_shodan_api_key(key_path):
     try:
         key = open(key_path, 'r').readline().split("\n")[0]
+        return key
     except:
         print(f"Shodan API key not found. Please write yours in : {os.path.abspath('./shodan_api.key')}")
         exit(0)
@@ -43,11 +44,13 @@ def dnscan(domain):
     os.system(cmd_dns)
 
 
-def the_harvester(domain): # Add search engine search in config file
+def the_harvester(domain):
     dir_path, domain = get_paths(domain, "theHarvester")
     create_directories(dir_path)
     search_engines = get_search_engines_from_config("config/theHarvester.yml")
-    cmd_harvester = "theHarvester -d " + domain + " -g -s -v -n " + search_engines + " -f " + dir_path + file_name
+    parameters = get_harvester_params("config/theHarvester.yml")
+    cmd_harvester = "theHarvester -d " + domain + " " + parameters + " " + search_engines + " -f " + dir_path + file_name
+    print(cmd_harvester)
     os.system(cmd_harvester)
 
 
@@ -58,6 +61,17 @@ def get_search_engines_from_config(path_to_config):
         if len(engines) == 0:
             return engines
         return ("-b " + engines)
+
+
+def get_harvester_params(path_to_config): # Add tuto for shodan api key (locate shodansearch.py)
+    with open(path_to_config, "r") as file:
+        config_data = yaml.safe_load(file)
+        elements = {"shodan_search": "s", "virtual_hosts": "v", "dns_lookup": "n"}
+        params = "-" if any([config_data[element] for element in elements.keys()]) else ""
+        for key, value in elements.items():
+            if config_data[key]:
+                params += value
+    return params
 
 
 def shodan_search(domain): # Look for more in-depth search
