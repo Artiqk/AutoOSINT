@@ -51,7 +51,6 @@ def the_harvester(domain):
     search_engines = get_search_engines_from_config("config/theHarvester.yml")
     parameters = get_harvester_params("config/theHarvester.yml")
     cmd_harvester = "theHarvester -d " + domain + " " + parameters + " " + search_engines + " -f " + dir_path + file_name
-    print(cmd_harvester)
     os.system(cmd_harvester)
 
 
