@@ -1,3 +1,3 @@
+python3 -m pip install pyyaml
 git clone https://github.com/rbsec/dnscan.git
-cd dnscan/
-pip3 install -r requirements.txt
+python3 -m pip install -r dnscan/requirements.txt
