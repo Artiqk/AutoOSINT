@@ -8,7 +8,7 @@
 
 search_engines: bing,yahoo,duckduckgo
 
-shodan_search: false
+shodan_search: true
 
 virtual_hosts: true
 
