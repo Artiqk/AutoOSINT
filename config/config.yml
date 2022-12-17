@@ -1,0 +1,4 @@
+dnscan: false
+theHarvester: false
+shodan: false
+urlscan: true
