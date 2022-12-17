@@ -2,7 +2,7 @@
 
 ## Mettre en place l'application
 
-## Pour que l'installeur marche, il est nécessaire d'utiliser Python 3 et aptitude pour les paquets.
+### Pour que l'installeur marche, il est nécessaire d'utiliser Python 3 et aptitude pour les paquets.
 
 ### Il faut dans un premier temps installer les dépendances requises.
 ```
