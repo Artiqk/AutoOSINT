@@ -2,7 +2,11 @@ import os
 import shodan
 
 def get_shodan_api_key(key_path):
-    return open(key_path, 'r').readline().split("\n")[0]
+    try:
+        key = open(key_path, 'r').readline().split("\n")[0]
+    except:
+        print(f"Shodan API key not found. Please write yours in : {os.path.abspath('./shodan_api.key')}")
+        exit(0)
 
 SHODAN_API_KEY = get_shodan_api_key("shodan_api.key")
 
@@ -38,7 +42,7 @@ def dnscan(domain):
     os.system(cmd_dns)
 
 
-def the_harvester(domain):
+def the_harvester(domain): # Add search engine search in config file
     dir_path, domain = get_paths(domain, "theHarvester")
     create_directories(dir_path)
     search_engine = "bing"
@@ -46,7 +50,7 @@ def the_harvester(domain):
     os.system(cmd_harvester)
 
 
-def shodan_search(domain):
+def shodan_search(domain): # Look for more in-depth search
     results = api.search(domain)
     display_shodan_results(results)
 
