@@ -11,3 +11,5 @@ args = parser.parse_args()
 
 handle_argument(args.domain, handle_domain)
 # handle_argument(args.mail, handle_mail)
+
+print(f"Scans results are stored under : {os.path.abspath(f'scans/{args.domain}/')}")
