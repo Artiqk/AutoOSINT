@@ -4,12 +4,9 @@
 # anubis, baidu, bevigil, binaryedge, bing, bingapi, bufferoverun, censys, certspotter,
 # crtsh, dnsdumpster, duckduckgo, fullhunt, github-code, hackertarget, hunter, intelx,
 # omnisint, otx, pentesttools, projectdiscovery, qwant, rapiddns, rocketreach,
-# securityTrails, sublist3r, threatcrowd, threatminer, urlscan, virustotal, yahoo,
-# zoomeye
+# securityTrails, sublist3r, threatcrowd, threatminer, urlscan, virustotal, yahoo, zoomeye
 
-# bing,yahoo,virustotal
-
-search_engines: bing,yahoo,urlscan
+search_engines: bing,yahoo,duckduckgo
 
 shodan_search: false
 
