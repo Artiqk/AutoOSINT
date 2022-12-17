@@ -7,4 +7,12 @@
 # securityTrails, sublist3r, threatcrowd, threatminer, urlscan, virustotal, yahoo,
 # zoomeye
 
-search_engines: "bing,yahoo,linkedin,urlscan,virustotal"
+# bing,yahoo,virustotal
+
+search_engines: bing,yahoo,urlscan
+
+shodan_search: false
+
+virtual_hosts: true
+
+dns_lookup: true
