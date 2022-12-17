@@ -56,8 +56,8 @@ def the_harvester(domain):
 
 def get_search_engines_from_config(path_to_config):
     with open(path_to_config, "r") as file:
-        config_data = yaml.safe_load(file)
-        engines =  config_data["search_engines"].strip()
+        config = yaml.safe_load(file)
+        engines =  config["search_engines"].strip()
         if len(engines) == 0:
             return engines
         return ("-b " + engines)
@@ -65,11 +65,11 @@ def get_search_engines_from_config(path_to_config):
 
 def get_harvester_params(path_to_config): # Add tuto for shodan api key (locate shodansearch.py)
     with open(path_to_config, "r") as file:
-        config_data = yaml.safe_load(file)
+        config = yaml.safe_load(file)
         elements = {"shodan_search": "s", "virtual_hosts": "v", "dns_lookup": "n"}
-        params = "-" if any([config_data[element] for element in elements.keys()]) else ""
+        params = "-" if any([config[element] for element in elements.keys()]) else ""
         for key, value in elements.items():
-            if config_data[key]:
+            if config[key]:
                 params += value
     return params
 
@@ -82,10 +82,29 @@ def shodan_search(domain): # Look for more in-depth search
     save_shodan_results(path_to_file, results)
 
 
+def urlscan(domain):
+    dir_path, domain = get_paths(domain, "urlscan")
+    filename = file_name.split(".")[0] + ".json" # Pas belle comme ligne mais solution rapide => Je remplace le .txt du filename en .json
+    path_to_file = dir_path + filename
+    create_directories(dir_path)
+    os.system(f"curl \"https://urlscan.io/api/v1/search/?q=domain:{domain}\" | tee {path_to_file}")
+
+
+def get_general_config(path_to_file):
+    with open(path_to_file, "r") as file:
+        return yaml.safe_load(file)
+
+
 def handle_domain(domain):
-    dnscan(domain)
-    the_harvester(domain)
-    shodan_search(domain)
+    config = get_general_config("config/config.yml")
+    if config["dnscan"]:
+        dnscan(domain)
+    if config["theHarvester"]:
+        the_harvester(domain)
+    if config["shodan"]:
+        shodan_search(domain)
+    if config["urlscan"]:
+        urlscan(domain)
 
 
 # def handle_mail(mail):
